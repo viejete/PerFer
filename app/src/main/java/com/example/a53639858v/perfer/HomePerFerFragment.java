@@ -1,9 +1,7 @@
 package com.example.a53639858v.perfer;
 
-import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,6 @@ public class HomePerFerFragment extends Fragment {
     View view;
     private ArrayList<String> notas = new ArrayList<>();
     private Button enter;
-    //private EditText fieldText;
     private ListView lvNotas;
     private ArrayAdapter<String> adapter;
 
@@ -41,14 +38,7 @@ public class HomePerFerFragment extends Fragment {
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        DatabaseReference myRef = database.getReference("message");
-        //DatabaseReference id_todo = myRef.child(""+System.currentTimeMillis());
-
-        final DatabaseReference ref = myRef.push();
-        ref.setValue("Hola 123");
-
-        //myRef.setValue("Hello, World!");
-        //id_todo.setValue("Child!");
+        final DatabaseReference myRef = database.getReference("message");
 
         enter = (Button) view.findViewById(R.id.buttonEnter);
         final EditText fieldText = (EditText) view.findViewById(R.id.enterText);
@@ -58,6 +48,7 @@ public class HomePerFerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (fieldText.getText().toString().trim().length() > 0) {
+                    DatabaseReference ref = myRef.push();
                     ref.setValue(fieldText.getText().toString());
                     fieldText.getText().clear();
 
@@ -73,13 +64,15 @@ public class HomePerFerFragment extends Fragment {
         );
 
         // Read from the database
-        ref.addValueEventListener(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                adapter.add(value);
+                for (DataSnapshot postData : dataSnapshot.getChildren()) {
+                    String message = postData.getValue(String.class);
+                    adapter.add(message);
+                }
             }
 
             @Override
@@ -91,6 +84,4 @@ public class HomePerFerFragment extends Fragment {
 
         return view;
     }
-
-
 }
