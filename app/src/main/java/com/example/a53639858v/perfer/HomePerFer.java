@@ -26,8 +26,17 @@ public class HomePerFer extends AppCompatActivity {
 
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                MessageTask message = new MessageTask(this);
-                message.execute();
+
+                //MessageTask message = new MessageTask(this);
+                //message.execute();
+
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
             }

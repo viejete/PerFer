@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -24,8 +25,9 @@ public class HomePerFerFragment extends Fragment {
     View view;
     private ArrayList<String> notas = new ArrayList<>();
     private Button enter;
-    private ListView lvNotas;
+    //private ListView lvNotas;
     private ArrayAdapter<String> adapter;
+    private GridView gridView;
 
     public HomePerFerFragment() {
     }
@@ -33,6 +35,7 @@ public class HomePerFerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_home_per_fer, container, false);
 
         // Write a message to the database
@@ -42,7 +45,9 @@ public class HomePerFerFragment extends Fragment {
 
         enter = (Button) view.findViewById(R.id.buttonEnter);
         final EditText fieldText = (EditText) view.findViewById(R.id.enterText);
-        lvNotas = (ListView) view.findViewById(R.id.lvNotas);
+        //lvNotas = (ListView) view.findViewById(R.id.lvNotas);
+        gridView = (GridView) view.findViewById(R.id.gridView);
+        //gridView.setAdapter(new NotesAdapter(this));
 
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +85,7 @@ public class HomePerFerFragment extends Fragment {
             }
         });
 
-        lvNotas.setAdapter(adapter);
+        gridView.setAdapter(adapter);
 
         return view;
     }
