@@ -1,20 +1,20 @@
 package com.example.a53639858v.perfer;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class NotesAdapter extends BaseAdapter {
 
     private Context context;
-    private Nota[] notas;
+    private ArrayList<Nota> notas;
 
-    public NotesAdapter (Context c , Nota[] notas) {
+    public NotesAdapter (Context c , ArrayList<Nota> notas) {
         context = c;
         this.notas = notas;
     }
@@ -22,7 +22,7 @@ public class NotesAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
 
-         Nota nota = (Nota) getItem(i);
+         final Nota nota = notas.get(i);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -34,17 +34,16 @@ public class NotesAdapter extends BaseAdapter {
 
             gridView = inflater.inflate(R.layout.grid_nota , null);
 
-            TextView textView = (TextView) gridView.findViewById(R.id.textGrid);
-            textView.setText(nota.getText());
 
-            ImageView imageView = (ImageView) gridView.findViewById(R.id.imageGrid);
+            //ImageView imageView = (ImageView) gridView.findViewById(R.id.imageGrid);
 
-            imageView.setImageURI(Uri.parse(nota.getUrlImage()));
+            //imageView.setImageURI(Uri.parse(nota.getUrlImage()));
         } else {
             gridView = convertView;
         }
 
-        //http://stackoverflow.com/questions/32578058/display-photo-in-gridview-taken-from-camera
+        TextView textView = (TextView) gridView.findViewById(R.id.textGrid);
+        textView.setText(nota.getText());
 
         return gridView;
     }
@@ -52,7 +51,7 @@ public class NotesAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 0;
+        return notas.size();
     }
 
     @Override
