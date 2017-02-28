@@ -99,6 +99,13 @@ public class HomePerFerFragment extends Fragment {
                 if (notas.get(position).getUrlImage() == null) {
 
                     dispatchTakePictureIntent();
+                    notas.get(position).setUrlImage(mCurrentPhotoPath);
+                    mCurrentPhotoPath = null;
+
+                    gridAdapter.notifyDataSetChanged();
+                    gridView.invalidateViews();
+
+                } else {
 
                 }
             }
@@ -120,11 +127,21 @@ public class HomePerFerFragment extends Fragment {
                 storageDir      // direcotry
         );
 
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
     private void dispatchTakePictureIntent() {
+
+        /*Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        i.addCategory(Intent.CATEGORY_OPENABLE);
+        i.setType("*//*");
+        String[] mimetypes = {"image/*" , "video/*"};
+        i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+        startActivityForResult(i, REQUEST_PHOTO);*/
+
+
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
@@ -146,23 +163,23 @@ public class HomePerFerFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
+        /*switch (requestCode) {
             case REQUEST_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    Uri seleccio = data.getData();
-                    String[] columna = {MediaStore.Images.Media.DATA};
+                    if (data != null){
+                        Uri seleccio = data.getData();
+                        String[] columna = {MediaStore.Images.Media.DATA};
 
-                    Cursor cursor = getContext().getContentResolver().query(
-                            seleccio, columna, null, null, null);
-                    cursor.moveToFirst();
+                        Cursor cursor = getContext().getContentResolver().query(
+                                seleccio, columna, null, null, null);
+                        cursor.moveToFirst();
 
-                    int indexColumna = cursor.getColumnIndex(columna[0]);
-                    String rutaFitxer = cursor.getString(indexColumna);
-                    cursor.close();
-                    mCurrentPhotoPath = rutaFitxer;
-
+                        int indexColumna = cursor.getColumnIndex(columna[0]);
+                        String rutaFitxer = cursor.getString(indexColumna);
+                        cursor.close();
+                        mCurrentPhotoPath = rutaFitxer;
+                    }
                 }
-
-        }
+        }*/
     }
 }

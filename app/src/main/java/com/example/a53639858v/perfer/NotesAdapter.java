@@ -1,10 +1,12 @@
 package com.example.a53639858v.perfer;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -43,7 +45,11 @@ public class NotesAdapter extends BaseAdapter {
         }
 
         TextView textView = (TextView) gridView.findViewById(R.id.textGrid);
+        ImageView imageGrid = (ImageView) gridView.findViewById(R.id.imageGrid);
         textView.setText(nota.getText());
+        if (nota.getUrlImage() != null) {
+            imageGrid.setImageURI(Uri.parse(nota.getUrlImage()));
+        }
 
         return gridView;
     }
