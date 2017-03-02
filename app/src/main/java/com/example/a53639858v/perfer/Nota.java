@@ -25,4 +25,12 @@ public class Nota {
     public void setText(String text) {
         this.text = text;
     }
+
+    @Override
+    public String toString() {
+        return "Nota{" +
+                "urlImage='" + urlImage + '\'' +
+                ", text='" + text + '\'' +
+                '}';
+    }
 }

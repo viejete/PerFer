@@ -50,12 +50,12 @@ public class HomePerFerFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home_per_fer, container, false);
 
         notas = new ArrayList<>();
-        gridAdapter = new NotesAdapter(getContext(), notas);
+        gridAdapter = new NotesAdapter(getContext(), 0, notas);
 
         // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        final DatabaseReference myRef = database.getReference("message");
+        //final DatabaseReference myRef = database.getReference("message");
 
         enter = (Button) view.findViewById(R.id.buttonEnter);
         final EditText fieldText = (EditText) view.findViewById(R.id.enterText);
@@ -64,18 +64,23 @@ public class HomePerFerFragment extends Fragment {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fieldText.getText().toString().trim().length() > 0) {
-                    DatabaseReference ref = myRef.push();
-                    ref.setValue(fieldText.getText().toString());
-                    notas.add(new Nota(null, fieldText.getText().toString()));
-                    fieldText.getText().clear();
+                int length = fieldText.getText().toString().trim().length();
 
+                if (length > 0) {
+
+                    //DatabaseReference ref = myRef.push();
+                    //ref.setValue(fieldText.getText().toString());
+
+                    notas.add(new Nota("", fieldText.getText().toString()));
+
+                    fieldText.getText().clear();
+                    gridAdapter.notifyDataSetChanged();
                 }
             }
         });
 
         // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
+        /*myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -89,23 +94,26 @@ public class HomePerFerFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError error) {
             }
-        });
+        });*/
 
         gridView.setAdapter(gridAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (notas.get(position).getUrlImage() == null) {
+                if (notas.get(position).getUrlImage().equals("")) {
 
+                    mCurrentPhotoPath = null;
                     dispatchTakePictureIntent();
                     notas.get(position).setUrlImage(mCurrentPhotoPath);
-                    mCurrentPhotoPath = null;
-
-                    gridAdapter.notifyDataSetChanged();
-                    gridView.invalidateViews();
 
                 } else {
+
+                    /*File photoToShow = new File(notas.get(position).getUrlImage());
+                    Intent i = new Intent();
+                    i.setAction(Intent.ACTION_VIEW);
+                    i.setDataAndType(Uri.parse("file://" + photoToShow.getAbsolutePath()) , "image/*");
+                    startActivity(i);*/
 
                 }
             }
@@ -133,15 +141,6 @@ public class HomePerFerFragment extends Fragment {
 
     private void dispatchTakePictureIntent() {
 
-        /*Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        i.addCategory(Intent.CATEGORY_OPENABLE);
-        i.setType("*//*");
-        String[] mimetypes = {"image/*" , "video/*"};
-        i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-        startActivityForResult(i, REQUEST_PHOTO);*/
-
-
-
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
@@ -162,6 +161,8 @@ public class HomePerFerFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        gridAdapter.notifyDataSetChanged();
 
         /*switch (requestCode) {
             case REQUEST_PHOTO:
