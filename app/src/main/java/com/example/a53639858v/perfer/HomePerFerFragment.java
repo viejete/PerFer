@@ -1,7 +1,6 @@
 package com.example.a53639858v.perfer;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -15,20 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static android.app.Activity.RESULT_OK;
-
 
 public class HomePerFerFragment extends Fragment {
 
@@ -109,11 +99,11 @@ public class HomePerFerFragment extends Fragment {
 
                 } else {
 
-                    /*File photoToShow = new File(notas.get(position).getUrlImage());
+                    File photoToShow = new File(notas.get(position).getUrlImage());
                     Intent i = new Intent();
                     i.setAction(Intent.ACTION_VIEW);
                     i.setDataAndType(Uri.parse("file://" + photoToShow.getAbsolutePath()) , "image/*");
-                    startActivity(i);*/
+                    startActivity(i);
 
                 }
             }
@@ -161,26 +151,6 @@ public class HomePerFerFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         gridAdapter.notifyDataSetChanged();
-
-        /*switch (requestCode) {
-            case REQUEST_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    if (data != null){
-                        Uri seleccio = data.getData();
-                        String[] columna = {MediaStore.Images.Media.DATA};
-
-                        Cursor cursor = getContext().getContentResolver().query(
-                                seleccio, columna, null, null, null);
-                        cursor.moveToFirst();
-
-                        int indexColumna = cursor.getColumnIndex(columna[0]);
-                        String rutaFitxer = cursor.getString(indexColumna);
-                        cursor.close();
-                        mCurrentPhotoPath = rutaFitxer;
-                    }
-                }
-        }*/
     }
 }
